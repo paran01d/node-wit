@@ -2,6 +2,7 @@
 
 const expect = require('chai').expect;
 const sinon = require('sinon');
+const debug = require('debug')('wit-test');
 
 module.exports.runTests = (wit) => {
   const log = wit.log;
@@ -62,7 +63,7 @@ module.exports.runTests = (wit) => {
 
     it('tests that Wit has correct functions', () => {
       const witFunctions = Object.keys(client);
-      expect(witFunctions).to.eql(['config', '_sessions', 'message']);
+      expect(witFunctions).to.eql(['config', '_sessions', 'message', 'entities', 'entity']);
     });
 
     it('tests message', () => {
@@ -72,6 +73,22 @@ module.exports.runTests = (wit) => {
           expect(data._text).to.be.equal('Hello');
         });
     });
+    it('tests entities', () => {
+      return client.entities()
+        .then((data) => {
+            expect(data).to.be.a('array');
+            expect(data[0]).to.equal('intent');
+        });
+    });
+    it('tests entity', () => {
+      return client.entity('intent')
+        .then((data) => {
+            expect(data).to.be.a('object');
+            expect(data.name).to.equal('intent');
+            debug(data);
+        });
+    });
+
   });
 
   describe('interactive', () => {
