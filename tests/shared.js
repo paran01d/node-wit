@@ -63,7 +63,7 @@ module.exports.runTests = (wit) => {
 
     it('tests that Wit has correct functions', () => {
       const witFunctions = Object.keys(client);
-      expect(witFunctions).to.eql(['config', '_sessions', 'message', 'entities', 'entity']);
+      expect(witFunctions).to.eql(['config', '_sessions', 'message', 'samples', 'entities', 'entity']);
     });
 
     it('tests message', () => {
@@ -80,6 +80,15 @@ module.exports.runTests = (wit) => {
             expect(data[0]).to.equal('intent');
         });
     });
+    it('tests samples', () => {
+      return client.samples()
+        .then((data) => {
+            expect(data).to.be.a('array');
+            expect(data[0]).to.be.a('object');
+            expect(data[0].text).to.equal('hello');
+        });
+    });
+
     it('tests entity', () => {
       return client.entity('intent')
         .then((data) => {
