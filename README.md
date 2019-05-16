@@ -132,4 +132,4 @@ Version prior to 20160511 will return the old format:
 
 1. Create a new app in wit.ai web console using tests/wit-ai-basic-app-for-tests.zip
 2. Copy the Server Access Token from app settings
-3. Run `WIT_TOKEN=XXX npm test`, where XXX is the Server Access Token
+3. Run `WIT_APP_ID=YYY WIT_TOKEN=XXX npm test`, where XXX is the Server Access Token and YYY is the App ID
