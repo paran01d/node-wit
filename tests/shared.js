@@ -61,10 +61,18 @@ module.exports.runTests = (wit) => {
       accessToken: process.env.WIT_TOKEN
     });
 
+    const appToken = process.env.WIT_APP_ID;
+
     it('tests that Wit has correct functions', () => {
       const witFunctions = Object.keys(client);
-      expect(witFunctions).to.eql(['config', '_sessions', 'message', 'samples', 'entities', 'entity']);
+      expect(witFunctions).to.eql(['config', '_sessions', 'message', 'samples', 'entities', 'entity', 'app']);
     });
+
+    it('runs app', () => {
+        return client.app(appToken).then((data) => {
+            expect(data.id).to.be.equal(appToken);
+        });
+    })
 
     it('tests message', () => {
       return client.message('Hello', {})
