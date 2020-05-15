@@ -64,10 +64,18 @@ module.exports.runTests = (wit) => {
       accessToken: process.env.WIT_TOKEN
     });
 
+    const appToken = process.env.WIT_APP_ID;
+
     it('tests that Wit has correct functions', () => {
       const witFunctions = Object.keys(client);
-      expect(witFunctions).to.eql(['config', '_sessions', 'message']);
+      expect(witFunctions).to.eql(['config', '_sessions', 'message', 'samples', 'entities', 'entity', 'app']);
     });
+
+    it('runs app', () => {
+        return client.app(appToken).then((data) => {
+            expect(data.id).to.be.equal(appToken);
+        });
+    })
 
     it('tests message', () => {
       return client.message('Hello', {})
@@ -76,6 +84,31 @@ module.exports.runTests = (wit) => {
           expect(data._text).to.be.equal('Hello');
         });
     });
+    it('tests entities', () => {
+      return client.entities()
+        .then((data) => {
+            expect(data).to.be.a('array');
+            expect(data[0]).to.equal('intent');
+        });
+    });
+    it('tests samples', () => {
+      return client.samples()
+        .then((data) => {
+            expect(data).to.be.a('array');
+            expect(data[0]).to.be.a('object');
+            expect(data[0].text).to.equal('hello');
+        });
+    });
+
+    it('tests entity', () => {
+      return client.entity('intent')
+        .then((data) => {
+            expect(data).to.be.a('object');
+            expect(data.name).to.equal('intent');
+            debug(data);
+        });
+    });
+
   });
 
   describe('interactive', () => {
