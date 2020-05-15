@@ -25,17 +25,13 @@ const accessToken = (() => {
 })();
 
 // Celebrities example
-// See https://wit.ai/aleka/wit-example-celebrities/
+// See https://wit.ai/aforaleka/wit-example-celebrities/
 
-const firstEntityResolvedValue = (entities, entity) => {
+const firstEntityValue = (entities, entity) => {
   const val = entities && entities[entity] &&
     Array.isArray(entities[entity]) &&
     entities[entity].length > 0 &&
-    entities[entity][0].resolved &&
-    entities[entity][0].resolved.values &&
-    Array.isArray(entities[entity][0].resolved.values) &&
-    entities[entity][0].resolved.values.length > 0 &&
-    entities[entity][0].resolved.values[0]
+    entities[entity][0].value
   ;
   if (!val) {
     return null;
@@ -43,21 +39,9 @@ const firstEntityResolvedValue = (entities, entity) => {
   return val;
 };
 
-const firstTraitValue = (traits, trait) => {
-  const val = traits && traits[trait] &&
-    Array.isArray(traits[trait]) &&
-    traits[trait].length > 0 &&
-    traits[trait][0].value
-  ;
-  if (!val) {
-    return null;
-  }
-  return val;
-};
-
-const handleMessage = ({entities, traits}) => {
-  const greetings = firstTraitValue(traits, 'wit$greetings');
-  const celebrity = firstEntityResolvedValue(entities, 'wit$notable_person:notable_person');
+const handleMessage = ({entities}) => {
+  const greetings = firstEntityValue(entities, 'greetings');
+  const celebrity = firstEntityValue(entities, 'notable_person');
   if (celebrity) {
     // We can call wikidata API for more info here
     printWikidataDescription(celebrity);
