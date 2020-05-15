@@ -30,7 +30,7 @@ See `examples/messenger.js` for a thoroughly documented tutorial.
 ### Overview
 
 The Wit module provides a Wit class with the following methods:
-* `message` - the Wit [message](https://wit.ai/docs/http/20160330#get-intent-via-text-link) API
+* `message` - the Wit [message](https://wit.ai/docs/http/20200513#get-intent-via-text-link) API
 
 You can also require a library function to test out your bot in the terminal. `require('node-wit').interactive`
 
@@ -59,7 +59,7 @@ console.log(client.message('set an alarm tomorrow at 7am'));
 
 ### .message()
 
-The Wit [message](https://wit.ai/docs/http/20160330#get-intent-via-text-link) API.
+The Wit [message](https://wit.ai/docs/http/20200513#get-intent-via-text-link) API.
 
 Takes the following parameters:
 * `message` - the text you want Wit.ai to extract the information from
@@ -90,41 +90,20 @@ See the [docs](https://wit.ai/docs) for more information.
 
 ## Changing the API version
 
-On 2016, May 11th, the /message API was updated to reflect the new Bot Engine model: intent are now entities.
-We updated the SDK to the latest version: 20160516.
+On May 13th, 2020, the `GET /message` API was updated to reflect the new data model: intents, traits and entities are now distinct.
+We updated the SDK to the latest version: `20200513`.
 You can target a specific version by passing the `apiVersion` parameter when creating the `Wit` object.
 
 ```json
 {
-  "msg_id" : "e86468e5-b9e8-4645-95ce-b41a66fda88d",
-  "_text" : "hello",
-  "entities" : {
-    "intent" : [ {
-      "confidence" : 0.9753469589149633,
-      "value" : "greetings"
-    } ]
-  }
-}
-```
-
-Version prior to 20160511 will return the old format:
-
-```json
-{
-  "msg_id" : "722fc79b-725c-4ca1-8029-b7f57ff88f54",
-  "_text" : "hello",
-  "outcomes" : [ {
-    "_text" : "hello",
-    "confidence" : null,
-    "intent" : "default_intent",
-    "entities" : {
-      "intent" : [ {
-        "confidence" : 0.9753469589149633,
-        "value" : "greetings"
-      } ]
-    }
+  "text": "hello",
+  "intents": [ {
+    "id": "1353535345345",
+    "name": "greet",
+    "confidence": 0.9753
   } ],
-  "WARNING" : "DEPRECATED"
+  "entities": [],
+  "traits": []
 }
 ```
 
@@ -132,4 +111,8 @@ Version prior to 20160511 will return the old format:
 
 1. Create a new app in wit.ai web console using tests/wit-ai-basic-app-for-tests.zip
 2. Copy the Server Access Token from app settings
-3. Run `WIT_APP_ID=YYY WIT_TOKEN=XXX npm test`, where XXX is the Server Access Token and YYY is the App ID
+3. Run `WIT_TOKEN=XXX npm test`, where XXX is the Server Access Token
+
+## License
+
+The license for node-wit can be found in LICENSE file in the root directory of this source tree.
